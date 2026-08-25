@@ -1,0 +1,2 @@
+{"agencia":"agencia-0","tipo":"CRIAR_CONTA","timestampLamport":1,"horaParede":"2026-08-25T01:02:54.537Z","detalhes":{"id":0,"nomeAluno":"Ana","saldoInicial":100}}
+{"agencia":"agencia-0","tipo":"DEPOSITO","timestampLamport":2,"horaParede":"2026-08-25T01:03:41.121Z","detalhes":{"id":0,"valor":25,"novoSaldo":125}}

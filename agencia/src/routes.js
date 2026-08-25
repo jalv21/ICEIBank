@@ -1,6 +1,6 @@
 import express from 'express';
 import * as contasController from './controllers/contasController.js';
-import * as transferenciasController from './controllers/transferenciasController.js';
+// import * as transferenciasController from './controllers/transferenciasController.js';
 
 const router = express.Router();
 
