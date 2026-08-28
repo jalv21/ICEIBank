@@ -1,0 +1,2 @@
+{"agencia":"agencia-1","tipo":"CRIAR_CONTA","timestampLamport":1,"horaParede":"2026-08-28T20:31:38.756Z","detalhes":{"id":1,"nomeAluno":"Jos�","saldoInicial":100}}
+{"agencia":"agencia-1","tipo":"TRANSFERENCIA_CREDITO_REMOTO","timestampLamport":4,"horaParede":"2026-08-28T20:32:46.900Z","detalhes":{"idConta":1,"valor":30,"origemAgencia":0}}
