@@ -55,3 +55,22 @@ async function transferir(req, res) {
     }
 }
 
+async function creditarRemoto(req, res) {
+    const { contas, relogio, registro } = req.app.locals;
+    const idConta = parseInt(req.params.id, 10);
+    const { valor, timestampLamport, origemAgencia } = req.body;
+
+    // Ao RECEBER uma mensagem de outra agência, o relógio de Lamport é
+    // atualizado com base no timestamp recebido - é a regra 3 do algoritmo.
+    const ts = relogio.aoReceber(timestampLamport);
+
+    const conta = contas.get(idConta);
+    if (!conta) return res.status(404).json({ erro: 'Conta não encontrada nesta agência. '});
+
+    conta.saldo += valor;
+    registro.registrar('TRANSFERENCIA_CREDITO_REMOTO', ts, { idConta, valor, origemAgencia });
+
+    res.json({ mensagem: 'Crédito remoto aplicado.', saldoAtual: conta.saldo });
+}
+
+export { transferir, creditarRemoto };
