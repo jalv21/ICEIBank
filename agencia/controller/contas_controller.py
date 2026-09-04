@@ -1,7 +1,8 @@
-from fastapi import Request, status, HTTPException
+from fastapi import FastAPI, Request, status, HTTPException
 from pydantic import BaseModel
 import config
-import app
+
+app = FastAPI()
 
 class ContaBody(BaseModel):
     id: int
