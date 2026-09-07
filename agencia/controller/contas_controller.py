@@ -1,6 +1,6 @@
-from agencia.model.contas_model import ContaRepository
-from agencia.schemas.conta_schema import ContaCreate
-from agencia.config import Configuration
+from model.contas_model import ContaRepository
+from schemas.conta_schema import ContaCreate
+from config import Configuration
 
 class ContasController:
     @staticmethod
@@ -13,7 +13,7 @@ class ContasController:
 
     @staticmethod
     def criar_conta(conta: ContaCreate):
-        return ContaRepository.criar(nome=conta.nome, email=conta.email)
+        return ContaRepository.criar(nome=conta.nomeAluno, email=conta.email, saldo=conta.saldo)
 
     @staticmethod
     def deletar_conta(conta_id: int):

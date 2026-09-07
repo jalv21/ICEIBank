@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from agencia.controller.contas_controller import ContasController
-from agencia.schemas.conta_schema import ContaCreate, ContaResponse
+from controller.contas_controller import ContasController
+from schemas.conta_schema import ContaCreate, ContaResponse
 
 router = APIRouter(prefix="/contas", tags=["Contas"])
 
@@ -15,11 +15,11 @@ def buscar(conta_id: int):
         raise HTTPException(status_code=404, detail="Aluno não encontrado.")
     return conta
 
-@router.post("/", reponse_model=ContaResponse, status_code=201)
+@router.post("/", response_model=ContaResponse, status_code=201)
 def criar(conta: ContaCreate):
     return ContasController.criar_conta(conta)
 
-@router.delete("/{usuario_id}")
+@router.delete("/{conta_id}")
 def deletar(conta_id: int):
     success = ContasController.deletar_conta(conta_id)
     if not success:

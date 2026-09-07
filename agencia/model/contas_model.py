@@ -5,6 +5,7 @@ class ContaModel(BaseModel):
     id: int
     nomeAluno: str
     email: str
+    saldo: float
 
 class ContaRepository:
     _contas: list[ContaModel] = []
@@ -19,8 +20,8 @@ class ContaRepository:
         return next((c for c in cls._contas if c.id == conta_id))
 
     @classmethod
-    def criar(cls, nome: str, email: str) -> ContaModel:
-        nova_conta = ContaModel(id=next(cls._id_counter), nomeAluno=nome, email=email)
+    def criar(cls, nome: str, email: str, saldo: float) -> ContaModel:
+        nova_conta = ContaModel(id=next(cls._id_counter), nomeAluno=nome, email=email, saldo=saldo)
         cls._contas.append(nova_conta)
         return nova_conta
 
