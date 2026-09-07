@@ -1,44 +1,20 @@
-from fastapi import FastAPI, Request, status, HTTPException
-from pydantic import BaseModel
-import config
+from agencia.model.contas_model import ContaRepository
+from agencia.schemas.conta_schema import ContaCreate
+from agencia.config import Configuration
 
-app = FastAPI()
+class ContasController:
+    @staticmethod
+    def listar_contas():
+        return ContaRepository.listar()
 
-class ContaBody(BaseModel):
-    id: int
-    nomeAluno: str
-    saldoInicial: str
+    @staticmethod
+    def buscar_conta(conta_id: int):
+        return ContaRepository.buscar_por_id(conta_id)
 
-@app.post("/contas")
-async def criar_conta(dados: ContaBody, request: Request):
-    id = dados.id
-    nome_aluno = dados.nomeAluno
-    saldo_inicial = dados.saldoInicial
+    @staticmethod
+    def criar_conta(conta: ContaCreate):
+        return ContaRepository.criar(nome=conta.nome, email=conta.email)
 
-    contas = request.app.state.contas
-    relogio = request.app.state.relogio
-    registro = request.app.state.registro
-    id_agencia = request.app.state.idAgencia
-
-    if(config.agencia_responsavel(id) != id_agencia):
-        raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail = f"Conta {id} não pertence a esta agência."
-        )
-
-    if id in contas:
-        raise HTTPException(
-            status_code = status.HTTP_409_CONFLICT,
-            detail = "Esta conta já existe."
-        )
-
-    ts = relogio.evento_local()
-    contas[id] = {
-        "id": id,
-        "nomeAluno": nome_aluno,
-        "saldo": saldo_inicial or 0
-    }
-
-    registro.registrar('CRIAR_CONTA', ts, { id, nome_aluno, saldo_inicial })
-
-    return status.HTTP_201_CREATED
+    @staticmethod
+    def deletar_conta(conta_id: int):
+        return ContaRepository.deletar(conta_id)
