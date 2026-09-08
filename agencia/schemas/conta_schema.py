@@ -12,12 +12,12 @@ class ContaCreate(ContaBase):
 class ContaResponse(ContaBase):
     id: int
 
-class Config:
-    from_attributes = True
-
 class ContaUpdate(ContaBase):
     pass
 
 class ContaPartialUpdate(BaseModel):
     nomeAluno: Optional[str] = None
     email: Optional[EmailStr] = None
+
+class Config:
+    from_attributes = True

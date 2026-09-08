@@ -32,3 +32,15 @@ class ContaRepository:
             cls._contas.remove(conta)
             return True
         return False
+
+    @classmethod
+    def editar(cls, conta_id: int, dados: dict) -> ContaModel | None:
+        conta = cls.buscar_por_id(conta_id)
+        if not conta:
+            return None
+
+        conta_atualizada = conta.model_copy(update=dados)
+
+        index = cls._contas.index(conta)
+        cls._contas[index] = conta_atualizada
+        return conta_atualizada
