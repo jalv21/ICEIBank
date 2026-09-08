@@ -1,5 +1,5 @@
 from model.contas_model import ContaRepository
-from schemas.conta_schema import ContaCreate
+from schemas.conta_schema import ContaCreate, ContaUpdate, ContaPartialUpdate
 from config import Configuration
 
 class ContasController:
@@ -18,3 +18,12 @@ class ContasController:
     @staticmethod
     def deletar_conta(conta_id: int):
         return ContaRepository.deletar(conta_id)
+
+    @staticmethod
+    def editar_conta_total(conta_id: int, dados: ContaUpdate):
+        return ContaRepository.editar(conta_id, dados.model_dump())
+
+    @staticmethod
+    def editar_conta_parcial(conta_id: int, dados: ContaPartialUpdate):
+        dados_preenchidos = dados.model_dump(exclude_unset=True)
+        return ContaRepository.editar(conta_id, dados_preenchidos)
