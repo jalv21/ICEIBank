@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 class ContaBase(BaseModel):
     nomeAluno: str
@@ -13,3 +14,10 @@ class ContaResponse(ContaBase):
 
 class Config:
     from_attributes = True
+
+class ContaUpdate(ContaBase):
+    pass
+
+class ContaPartialUpdate(BaseModel):
+    nomeAluno: Optional[str] = None
+    email: Optional[EmailStr] = None
