@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from controller.contas_controller import ContasController
-from schemas.conta_schema import ContaCreate, ContaResponse
+from schemas.conta_schema import (
+    ContaCreate, ContaResponse, ContaUpdate, ContaPartialUpdate
+)
 
 router = APIRouter(prefix="/contas", tags=["Contas"])
 
@@ -25,3 +27,17 @@ def deletar(conta_id: int):
     if not success:
         raise HTTPException(status_code=404, detail="Aluno não encontado")
     return {"detail": "Conta removida com sucesso"}
+
+@router.put("/{conta_id}", response_model=ContaResponse)
+def editar_total(conta_id: int, conta: ContaUpdate):
+    editado = ContasController.editar_conta_total(conta_id, conta)
+    if not editado:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    return editado
+
+@router.patch("/{conta_id}", response_model=ContaResponse)
+def editar_parcial(conta_id: int, conta: ContaPartialUpdate):
+    editado = ContasController.editar_conta_parcial(conta_id, conta)
+    if not editado:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    return editado
