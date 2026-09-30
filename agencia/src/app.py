@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 import os
 import sys
 from urllib.parse import urlparse
+from routes import router
 
 id_agencia = int(os.environ.get("AGENCIA_ID", "0"))
 agencia_config = next((a for a in config.AGENCIAS if a["id"] == id_agencia))
@@ -26,4 +27,5 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(router)
 
