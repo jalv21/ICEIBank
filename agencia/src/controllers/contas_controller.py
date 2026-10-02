@@ -1,4 +1,4 @@
-from fastapi import Request, Response, HTTPException
+from fastapi import Request, HTTPException
 from config import Configuration as config
 from model.contas_model import *
 
@@ -27,4 +27,22 @@ def consultar_saldo(req: Request, conta_id: int):
 
     if not conta:
         raise HTTPException(status_code=404, detail="Erro: conta não encontrada nesta agência.")
+    return conta
+
+def depositar(dados: DepositarIn, req: Request):
+    id = dados.id
+    valor = dados.valor
+
+    state = req.app.state
+    contas, relogio, registro = state.contas, state.relogio, state.registro
+
+    conta = contas.get(id)
+
+    if not conta:
+        raise HTTPException(status_code=404, detail="Erro: conta não encontrada nesta agência.")
+
+    ts = relogio.evento_local()
+    conta.saldo += valor
+    registro.registrar('DEPOSITO', ts, dados.model_dump())
+
     return conta
