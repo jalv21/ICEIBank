@@ -9,9 +9,8 @@ class CriarContaIn(BaseModel):
 class DepositarIn(BaseModel):
     id: int
     valor: float
-    novo_saldo: float
+    novo_saldo: float # verificar se faz sentido depois
 
 class SacarIn(BaseModel):
     id: int
     valor: float
-    
