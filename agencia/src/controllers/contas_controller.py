@@ -1,10 +1,7 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import Request, Response, HTTPException
 from config import Configuration as config
 from model.contas_model import *
 
-router = APIRouter(prefix="/contas", tags=["contas"])
-
-@router.post("", status_code=201)
 def criar_conta(dados: CriarContaIn, req: Request):
     id = dados.id
 
@@ -22,3 +19,12 @@ def criar_conta(dados: CriarContaIn, req: Request):
     registro.registrar("CRIAR_CONTA", ts, dados.model_dump())
 
     return {"message": "Conta criada."}
+
+def consultar_saldo(req: Request, conta_id: int):
+    state = req.app.state
+    contas = state.contas
+    conta = contas.get(conta_id)
+
+    if not conta:
+        raise HTTPException(status_code=404, detail="Erro: conta não encontrada nesta agência.")
+    return conta
