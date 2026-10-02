@@ -46,3 +46,23 @@ def depositar(dados: DepositarIn, req: Request):
     registro.registrar('DEPOSITO', ts, dados.model_dump())
 
     return conta
+
+def sacar(dados: SacarIn, req: Request):
+    state = req.app.state
+    contas, relogio, registro = state.contas, state.relogio, state.registro
+
+    valor = dados.valor
+
+    conta = contas.get(dados.id)
+
+    if not conta:
+        raise HTTPException(status_code=404, detail="Erro: conta não encontrada nesta agência.")
+
+    if conta.saldo < valor:
+        raise HTTPException(status_code=400, detail="Erro: saldo insuficiente.")
+
+    ts = relogio.evento_local()
+    conta.saldo -= valor
+    registro.registrar('SAQUE', ts, dados.model_dump())
+
+    return conta

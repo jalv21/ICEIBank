@@ -10,3 +10,8 @@ class DepositarIn(BaseModel):
     id: int
     valor: float
     novo_saldo: float
+
+class SacarIn(BaseModel):
+    id: int
+    valor: float
+    
