@@ -1,14 +1,8 @@
 from fastapi import APIRouter, Request, HTTPException
 from config import Configuration as config
-from pydantic import BaseModel
+from model.contas_model import *
 
 router = APIRouter(prefix="/contas", tags=["contas"])
-
-class CriarContaIn(BaseModel):
-    id: int
-    nome_aluno: str
-    email: str
-    saldo_inicial: float = 0
 
 @router.post("", status_code=201)
 def criar_conta(dados: CriarContaIn, req: Request):
