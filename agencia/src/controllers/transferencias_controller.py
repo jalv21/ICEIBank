@@ -71,3 +71,23 @@ async def transferir(dados: TransferenciaIn, req: Request):
             detail="Falha ao contatar agência de destino. Débito já aplicado - inconsistência conhecida (ver Sprint 4)"
         )
 
+async def creditar_remoto(dados: CreditarIn, req: Request):
+    state = req.app.state
+    contas, relogio, registro = state.contas, state.relogio, state.registro
+
+    id_conta = dados.id_destino
+    valor = dados.valor
+    timestamp = dados.timestamp
+
+    # Ao RECEBER uma mensagem de outra agência, o relógio de Lamport é
+    # atualizado com base no timestamp recebido - é a regra 3 do algoritmo.
+    ts = relogio.ao_receber(timestamp)
+
+    conta = contas.get(id_conta)
+    if not conta:
+        raise HTTPException(status_code=404, detail="Erro: Conta não encontrada nesta agência.")
+
+    conta.saldo += valor
+    registro.registrar('TRANSFERENCIA_CREDITO_REMOTO', ts, dados.model_dump())
+
+    return {"mensagem": "Crédito remoto aplicado.", "saldoAtual": conta.saldo}
